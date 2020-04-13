@@ -1,0 +1,30 @@
+{
+	"name": "js-phaser3",
+	"version": "1.0.0",
+	"description": "Project template based on https://github.com/lean/phaser-es6-webpack/tree/phaser3 with modifications",
+	"main": "index.js",
+	"scripts": {
+		"clean": "rm -r dist/*",
+		"build": "webpack --mode production",
+		"watch": "webpack --watch --mode development",
+		"lint": "eslint \"src/**/*.js\"",
+		"dev": "webpack-dev-server --watch --mode development",
+		"test": "ava"
+	},
+	"author": "Martijn van Iersel <mvaniersel@gmail.com>",
+	"license": "MIT",
+	"devDependencies": {
+		"ava": "^3.6.0",
+		"copy-webpack-plugin": "^5.1.1",
+		"eslint": "^6.8.0",
+		"expose-loader": "^0.7.5",
+		"html-webpack-plugin": "^4.2.0",
+		"webpack": "^4.42.1",
+		"webpack-cli": "^3.3.11",
+		"webpack-dev-server": "^3.10.3"
+	},
+	"dependencies": {
+		"phaser": "^3.22.0",
+		"webfontloader": "^1.6.28"
+	}
+}

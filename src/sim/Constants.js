@@ -12,4 +12,4 @@ export const START_TEMPERATURE = 200; // in Kelvin
 
 
 // GUI parameters
-export const TILESIZE = 32;
+export const TILESIZE = 64;

@@ -31,16 +31,11 @@ export default class extends Phaser.Scene {
 	create () {
 		console.log("Game.create called");
 
-		this.add.text(0, 0, 'Exo Keeper', {
-			font: '32px Bangers',
-			fill: '#7744ff'
-		});
-
 		this.logElement = document.getElementById("log");
 
-		this.gridView = new GridView(this, this.sim.grid, { x : 100, y : 100 });
-		this.speciesView = new SpeciesView(this, this.sim.grid, { x : 100, y : 100 });
-		this.cursor = new Cursor(this, { x : 100, y : 100 });
+		this.gridView = new GridView(this, this.sim.grid);
+		this.speciesView = new SpeciesView(this, this.sim.grid);
+		this.cursor = new Cursor(this);
 
 		this.add.existing(this.gridView);
 		this.add.existing(this.speciesView);
@@ -51,8 +46,37 @@ export default class extends Phaser.Scene {
 		this.input.keyboard.on('keydown', this.onKeyDown, this);
 
 		this.setFilter(1);
+
+		var cursors = this.input.keyboard.createCursorKeys();
+
+		var controlConfig = {
+			camera: this.cameras.main,
+			left: cursors.left,
+			right: cursors.right,
+			up: cursors.up,
+			down: cursors.down,
+			zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+			zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
+			acceleration: 0.06,
+			drag: 0.0005,
+			maxSpeed: 1.0
+		};
+
+		this.controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
+
+
+		this.add.text(0, 0, 'Exo Keeper', {
+			font: '32px Bangers',
+			fill: '#7744ff'
+		});
+
 	}
 
+	/*
+	this.input.on('wheel', function (pointer, gameObjects, deltaX, deltaY, deltaZ) {
+		// TODO
+	});
+	*/
 	tickAndLog() {
 		this.sim.tick();
 		this.gridView.update();
@@ -60,13 +84,15 @@ export default class extends Phaser.Scene {
 		this.logElement.innerText = `Tick: ${this.sim.tickCounter}\n${this.currentCell}`;
 	}
 
-	update() {
+	update (time, delta) {
+		this.controls.update(delta);
 	}
 
 	toGridCoords({x, y}) {
+		let cursor = this.cameras.main.getWorldPoint(x, y);
 		return { 
-			mx: Math.floor((x - 100) / TILESIZE),
-			my: Math.floor((y - 100) / TILESIZE) 
+			mx: Math.floor(cursor.x / TILESIZE),
+			my: Math.floor(cursor.y / TILESIZE) 
 		};
 	}
 

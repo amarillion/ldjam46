@@ -1,4 +1,4 @@
-import { MAX_SPECIES_PER_CELL } from "./Constants";
+import { MAX_SPECIES_PER_CELL, PHOTOSYNTHESIS_BASE_RATE } from "./Constants";
 
 export class Cell {
 
@@ -47,14 +47,41 @@ export class Cell {
 	}
 
 	speciesToString() {
-		return this._species.map(i => `${i.speciesId}: ${i.biomass} `).join();
+		return this._species.map(i => `${i.speciesId}: ${i.biomass.toFixed(1)} `).join();
 	}
 
 	// string representation of cell...
 	toString() {
 		return `[${this.x}, ${this.y}] ` +
-		`CO2: ${this.co2} H2O: ${this.h2o} O2: ${this.o2} Organic: ${this.deadBiomass} ` + 
+		`CO2: ${this.co2.toFixed(1)} H2O: ${this.h2o.toFixed(1)} O2: ${this.o2.toFixed(1)} Organic: ${this.deadBiomass.toFixed(1)} ` + 
 		`Species: ${this.speciesToString()}`;
 	}
 
+	// part of Phase I
+	growAndDie() {
+		// each species should grow and die based on local fitness.
+		// each species has 3 possible roles:
+
+		// consumer, producer, reducer
+
+		for (const sp of this._species) {
+			
+			// PHOTOSYNTHESIS
+
+			// let's assume all of them are producers for now
+			// lowest substrate determines growth rate.
+			const minS = Math.min(this.co2, this.h2o);
+
+			const rate = PHOTOSYNTHESIS_BASE_RATE * minS; // growth per tick
+			//TODO: should also depend on solar energy
+
+			const amount = sp.biomass * rate;
+			
+			this.o2 += amount;
+			this.co2 -= amount;
+			this.h2o -= amount;
+			sp.biomass += amount;
+
+		}
+	}
 }

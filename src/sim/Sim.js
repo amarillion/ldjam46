@@ -46,7 +46,9 @@ export class Sim {
 	}
 
 	growAndDie() {
-
+		for (const c of this.grid.eachNode()) {
+			c.growAndDie();
+		}
 	}
 
 	interact() {

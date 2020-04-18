@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import { Sim } from '../sim/Sim.js';
 import { GridView } from '../view/GridView.js';
+import { SpeciesView } from '../view/SpeciesView.js';
 
 export default class extends Phaser.Scene {
 	constructor () {
@@ -33,6 +34,7 @@ export default class extends Phaser.Scene {
 		this.logElement = document.getElementById("log");
 
 		this.gridView = new GridView(this, this.sim.grid, { x : 100, y : 100 });
+		this.speciesView = new SpeciesView(this, this.sim.grid, { x : 100, y : 100 });
 
 		// property of interest -> co2
 		// CO2: (cell) => cell.co2
@@ -40,11 +42,13 @@ export default class extends Phaser.Scene {
 		this.gridView.setProp((cell) => cell.sumLivingBiomass());
 
 		this.add.existing(this.gridView);
+		this.add.existing(this.speciesView);
 	}
 
 	tickAndLog() {
 		this.sim.tick();
 		this.gridView.update();
+		this.speciesView.update();
 		this.logElement.innerText = `Tick: ${this.sim.tickCounter}\n${this.currentCell}`;
 	}
 

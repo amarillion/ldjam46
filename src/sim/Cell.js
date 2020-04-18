@@ -28,6 +28,10 @@ export class Cell {
 		return this._species.reduce((acc, cur) => acc + cur.biomass, 0);
 	}
 
+	get species() {
+		return this._species;
+	}
+
 	// introduce a given amount of species to this cell
 	addSpecies(speciesId, biomass) {
 		const existing = this._species.find(i => i.speciesId === speciesId);

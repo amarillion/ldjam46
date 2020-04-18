@@ -1,8 +1,7 @@
 import Phaser from 'phaser';
+import { TILESIZE } from '../sim/Constants';
 
 // docs: https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Grid.html
-
-const TILESIZE = 32;
 
 export class GridView extends Phaser.GameObjects.Graphics {
 

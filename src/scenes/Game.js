@@ -35,11 +35,14 @@ export default class extends Phaser.Scene {
 			font: '32px Bangers',
 			fill: '#7744ff'
 		});
+
+		this.logElement = document.getElementById("log");
 	}
 
 	tickAndLog() {
 		this.sim.tick();
-		console.log(`Tick: ${this.sim.tickCounter}`);
+		
+		this.logElement.innerText = `Tick: ${this.sim.tickCounter}`;
 	}
 
 	update() {

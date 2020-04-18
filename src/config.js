@@ -5,5 +5,9 @@ export default {
 	parent: 'content',
 	width: 800,
 	height: 600,
-	localStorageName: 'phaseres6webpack'
+	localStorageName: 'exokeeper',
+	disableContextMenu: true,
+	fps: {
+		target: 20
+	}
 };

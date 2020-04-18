@@ -10,11 +10,13 @@ export class GridView extends Phaser.GameObjects.Graphics {
 		this.grid = grid;
 		this.prop = () => 1;
 
-		// default color map
-		this.colorMap = (norm) => {
-			const intensity = Math.floor(norm * 127);
-			return intensity * 0x020101;
-		};
+		// default color
+		this.color = 0xFF0000;
+
+		// this.colorMap = (norm) => {
+		// 	const intensity = Math.floor(norm * 127);
+		// 	return intensity * 0x020101;
+		// };
 
 		this.update();
 	}
@@ -26,9 +28,9 @@ export class GridView extends Phaser.GameObjects.Graphics {
 	}
 
 	// provide a function that maps a range 0..1 to a hex color code;
-	setColorMap(colorMapFunction) {
-		this.colorMap = colorMapFunction;
-	}
+	// setColorMap(colorMapFunction) {
+	// 	this.colorMap = colorMapFunction;
+	// }
 
 	minMax(prop) {
 		let min = Infinity;
@@ -52,17 +54,15 @@ export class GridView extends Phaser.GameObjects.Graphics {
 		this.clear();
 		
 		const prop = this.prop;
-		const mapColor = this.colorMap;
 
-		const {min, max} = this.minMax(prop);
+		const { max } = this.minMax(prop);
 
 		for (const cell of this.grid.eachNode()) {
 			const x1 = cell.x * TILESIZE;
 			const y1 = cell.y * TILESIZE;
 			const val = prop(cell);
-			const norm = normalize(val, min, max);
-			const color = mapColor(norm);
-			this.fillStyle(color, 1.0);
+			const norm = normalize(val, 0, max);
+			this.fillStyle(this.color, norm); // use normalized value as alpha
 			this.fillRect(x1, y1, TILESIZE-1, TILESIZE-1);
 		}
 	}

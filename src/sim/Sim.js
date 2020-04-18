@@ -5,7 +5,11 @@ import { Species } from "./Species.js";
 export class Sim {
 
 	constructor() {
-		this.grid = new Grid(20, 10); // grid for cellular automata
+		// TODO: return to larger grid
+		// this.grid = new Grid(20, 10); // grid for cellular automata
+		
+		this.grid = new Grid(1, 1); // only one cell for the time being
+
 		this.species = {}; // map of species by id.
 		this.planet = new Planet(); // planetary properties
 		this.init();
@@ -14,9 +18,16 @@ export class Sim {
 
 	init() {
 		// introduce the first species with random DNA
-		const lca = new Species();
+		// NB: the first 12 species will be hardcoded
+		const lca = this.createSpecies();
 		const randomCell = this.grid.randomCell();
-		randomCell.introduceSpecies(lca, { amount: 100 });
+		randomCell.addSpecies(lca.id, 100);
+	}
+
+	createSpecies() {
+		const s = new Species();
+		this.species[s.id] = s;
+		return s;
 	}
 
 	tick() {

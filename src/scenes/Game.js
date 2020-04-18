@@ -42,7 +42,7 @@ export default class extends Phaser.Scene {
 	tickAndLog() {
 		this.sim.tick();
 		
-		this.logElement.innerText = `Tick: ${this.sim.tickCounter}`;
+		this.logElement.innerText = `Tick: ${this.sim.tickCounter}\n ${this.sim.grid.get(0,0)}`;
 	}
 
 	update() {

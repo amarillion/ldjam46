@@ -25,7 +25,7 @@ export default class extends Phaser.Scene {
 	preload () {}
 	
 	create () {
-		this.add.text(0, 0, 'Insert game title here', {
+		this.add.text(0, 0, 'Exo Keeper', {
 			font: '32px Bangers',
 			fill: '#7744ff'
 		});

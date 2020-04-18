@@ -19,7 +19,7 @@ Run:
 
 ```npm install``` 
 
-## 4. Run the development server:
+## 3. Run the development server:
 
 Run:
 

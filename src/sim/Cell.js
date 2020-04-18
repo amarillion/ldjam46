@@ -1,6 +1,8 @@
 export class Cell {
 
-	constructor() {
+	constructor(x, y) {
+		this.x = x;
+		this.y = y;
 		this.deadBiomass = 0;
 		this.co2 = 0;
 		this.o2 = 0;
@@ -14,7 +16,7 @@ export class Cell {
 	}
 
 	introduceSpecies(speciesId, biomass) {
-		
+
 	}
 
 }

@@ -1,4 +1,8 @@
-import { MAX_SPECIES_PER_CELL, PHOTOSYNTHESIS_BASE_RATE } from "./Constants";
+import { 
+	MAX_SPECIES_PER_CELL, 
+	PHOTOSYNTHESIS_BASE_RATE, 
+	START_TEMPERATURE 
+} from "./Constants";
 
 export class Cell {
 
@@ -11,7 +15,7 @@ export class Cell {
 		this.co2 = 100;
 		this.o2 = 100;
 		this.h2o = 100;
-		this.temperature = 200; // In Kelvin
+		this.temperature = START_TEMPERATURE; // In Kelvin
 
 		this.solarEnergy = 1.0; // amount of solar energy, influences rate of photosynthesis.
 		
@@ -83,5 +87,16 @@ export class Cell {
 			sp.biomass += amount;
 
 		}
+		this.sortSpecies();
+	}
+
+	migrateTo(other) {
+		if (this._species.length === 0) return;
+
+		const sp = this._species[0]; // highest ranked species
+		const amount = sp.biomass * 0.01;
+
+		other.addSpecies(sp.speciesId, amount);
+		sp.biomass -= amount;
 	}
 }

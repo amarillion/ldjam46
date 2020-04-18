@@ -78,7 +78,6 @@ export class Grid {
 	*/
 
 	*getAdjacent(n) {
-		const result = [];
 		let dx = 0;
 		let dy = -1;
 		const x = n.x;
@@ -87,13 +86,14 @@ export class Grid {
 		for (const dir of [NORTH, EAST, SOUTH, WEST]) {
 			const nx = (x + dx + this.width) % this.width;
 			const ny = y + dy;
-			const neighbor = this.get(nx, ny);
-			
-			yield [dir, neighbor];
+
+			if (ny >= 0 && ny < this.height) {
+				const neighbor = this._data[this._index(nx, ny)];
+				yield [dir, neighbor];
+			}
 			
 			// rotate 90 degrees
 			[dx, dy] = [-dy, dx];
 		}
-		return result;
 	}
 }

@@ -8,7 +8,7 @@ export class Sim {
 		// TODO: return to larger grid
 		// this.grid = new Grid(20, 10); // grid for cellular automata
 		
-		this.grid = new Grid(1, 1); // only one cell for the time being
+		this.grid = new Grid(2, 2); // only few cells to make logging easier
 
 		this.species = {}; // map of species by id.
 		this.planet = new Planet(); // planetary properties
@@ -60,6 +60,12 @@ export class Sim {
 	}
 
 	migrate() {
+		// for each pair of cells, 1 % migrates...
+		for (const cell of this.grid.eachNode()) {
+			for (const [, other] of this.grid.getAdjacent(cell)) {
+				cell.migrateTo(other);
+			}
+		}
 
 	}
 

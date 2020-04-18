@@ -24,6 +24,10 @@ export class Cell {
 		this._species = [];
 	}
 
+	sumLivingBiomass() {
+		return this._species.reduce((acc, cur) => acc + cur.biomass, 0);
+	}
+
 	// introduce a given amount of species to this cell
 	addSpecies(speciesId, biomass) {
 		const existing = this._species.find(i => i.speciesId === speciesId);

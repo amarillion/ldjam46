@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
-import Mushroom from '../sprites/Mushroom.js';
 import { Sim } from '../sim/Sim.js';
+import { GridView } from '../view/GridView.js';
 
 export default class extends Phaser.Scene {
 	constructor () {
@@ -18,35 +18,34 @@ export default class extends Phaser.Scene {
 			// callbackScope: thisArg,
 			loop: true
 		});
+
+		this.currentCell = this.sim.grid.get(0, 0);
 	}
 
 	preload () {}
 	
 	create () {
-		this.mushroom = new Mushroom({
-			scene: this,
-			x: 400,
-			y: 300,
-			asset: 'mushroom'
-		});
-
-		this.add.existing(this.mushroom);
 		this.add.text(0, 0, 'Insert game title here', {
 			font: '32px Bangers',
 			fill: '#7744ff'
 		});
 
 		this.logElement = document.getElementById("log");
+
+		this.gridView = new GridView(this, this.sim.grid, { x : 100, y : 100 });
+
+		// property of interest -> co2
+		// CO2: (cell) => cell.co2
+		
+		this.gridView.setProp((cell) => cell.sumLivingBiomass());
+
+		this.add.existing(this.gridView);
 	}
 
 	tickAndLog() {
 		this.sim.tick();
-		
-		let str = `Tick: ${this.sim.tickCounter}\n`;
-		for (const cell of this.sim.grid.eachNode()) {
-			str += `${cell}\n`;
-		}
-		this.logElement.innerText = str;
+		this.gridView.update();
+		this.logElement.innerText = `Tick: ${this.sim.tickCounter}\n${this.currentCell}`;
 	}
 
 	update() {

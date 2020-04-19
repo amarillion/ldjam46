@@ -18,13 +18,13 @@ export class Sim {
 		// introduce the first species with random DNA
 		// NB: the first 12 species will be hardcoded
 		for (let i = 0; i < 4; ++i) {
-			const lca = this.createSpecies();
+			this.createSpecies();
 		
 			// randomly drop some species in a few spots.
-			for (let j = 0; j < 5; ++j) {
-				const randomCell = this.grid.randomCell();
-				randomCell.addSpecies(lca.id, 100);
-			}
+			// for (let j = 0; j < 5; ++j) {
+			// 	const randomCell = this.grid.randomCell();
+			// 	randomCell.addSpecies(lca.id, 100);
+			// }
 		}
 
 	}

@@ -35,6 +35,14 @@ export default class extends Phaser.Scene {
 		this.logElement = document.getElementsByTagName("exo-detail-window")[0];
 		this.planetElement = document.getElementsByTagName("exo-planet-window")[0];
 
+		this.speciesElement = document.getElementsByTagName("exo-species-window")[0];
+		
+		this.speciesElement.introduceSpeciesCallback = (selectedSpecies) => {
+			if (this.currentCell) {
+				this.currentCell.addSpecies(selectedSpecies, 100);
+			}
+		};
+
 		this.gridView = new GridView(this, this.sim.grid);
 		// this.speciesView = new SpeciesView(this, this.sim.grid);
 		this.cursor = new Cursor(this);

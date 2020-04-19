@@ -36,6 +36,7 @@ export class Sim {
 	}
 
 	tick() {
+		this.updatePhysicalProperties();
 		// phase I
 		this.growAndDie();
 		// phase II
@@ -48,6 +49,19 @@ export class Sim {
 		this.updatePlanet();
 
 		this.tickCounter += 1;
+	}
+
+	updatePhysicalProperties() {
+		for (const c of this.grid.eachNode()) {
+			c.updatePhysicalProperties();
+		}
+
+		// for each pair of cells, do diffusion
+		for (const cell of this.grid.eachNodeCheckered()) {
+			for (const [, other] of this.grid.getAdjacent(cell)) {
+				cell.diffusionTo(other);
+			}
+		}
 	}
 
 	growAndDie() {
@@ -65,8 +79,8 @@ export class Sim {
 	}
 
 	migrate() {
-		// for each pair of cells, 1 % migrates...
-		for (const cell of this.grid.eachNode()) {
+		// for each pair of cells, do migration
+		for (const cell of this.grid.eachNodeCheckered()) {
 			for (const [, other] of this.grid.getAdjacent(cell)) {
 				cell.migrateTo(other);
 			}
@@ -75,7 +89,15 @@ export class Sim {
 	}
 
 	updatePlanet() {
-
+		this.planet.reset();
+		let n = 0;
+		let tempSum = 0;
+		for (const c of this.grid.eachNode()) {
+			tempSum += c.temperature;
+			n++;
+			c.updateStats(this.planet);
+		}
+		this.planet.temperature = tempSum / n;
 	}
 
 }

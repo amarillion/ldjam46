@@ -2,27 +2,36 @@ import {
 	MAX_SPECIES_PER_CELL, 
 	PHOTOSYNTHESIS_BASE_RATE, 
 	RESPIRATION_BASE_RATE, 
-	START_TEMPERATURE, 
-	DEATH_RATE
+	DEATH_RATE,
+	START_HEAT,
+	START_CO2,
+	CO2_BOILING_POINT,
+	H2O_MELTING_POINT,
+	MAX_STELLAR_HEAT_IN,
+	SURFACE_HEAT_CAPACITY
 } from "./Constants";
 import { START_SPECIES, ROLE, INTERACTION } from "./StartSpecies";
 import { assert } from "./assert";
 
 export class Cell {
 
-	constructor(x, y) {
+	// latitude in degrees, from -90 (north pole) to 90 (south pole)
+	constructor(x, y, latitude) {
 		this.x = x;
 		this.y = y;
 
 		// the following are all in Mol
 		this.deadBiomass = 10; // dead organic material, represented by formula ch2o
-		this.co2 = 1000;
+		this.co2 = START_CO2;
 		this.o2 = 10;
 		this.h2o = 1000;
-		this.temperature = START_TEMPERATURE; // In Kelvin
-
-		this.solarEnergy = 1.0; // amount of solar energy, influences rate of photosynthesis.
+		this.latitude = latitude;
+		this.heat = START_HEAT;
 		
+		// constant amount of stellar energy per tick
+		this.stellarEnergy = Math.cos(this.latitude / 180 * 3.141) * MAX_STELLAR_HEAT_IN;
+		assert (this.stellarEnergy >= 0);
+
 		// pairs of { speciesId, biomass }
 		// keep this list sorted, most prevalent species first
 		this._species = [];
@@ -69,8 +78,20 @@ export class Cell {
 	// string representation of cell...
 	toString() {
 		return `[${this.x}, ${this.y}] ` +
-		`CO2: ${this.co2.toFixed(1)} H2O: ${this.h2o.toFixed(1)} O2: ${this.o2.toFixed(1)} Organic: ${this.deadBiomass.toFixed(1)} ` + 
-		`Species: ${this.speciesToString()}`;
+		`
+Heat: ${this.heat.toExponential(2)} GJ/km^2
+Temperature: ${this.temperature.toFixed(0)} K
+Heat gain from sun: ${this.stellarEnergy.toExponential(2)} GJ/km^2/tick
+Heat loss to space: ${this.heatLoss.toExponential(2)} GJ/km^2/tick
+Latitude: ${this.latitude.toFixed(0)} deg
+
+CO2: ${this.co2.toFixed(1)}
+H2O: ${this.h2o.toFixed(1)}
+O2: ${this.o2.toFixed(1)}
+Organic: ${this.deadBiomass.toFixed(1)}
+
+Species: ${this.speciesToString()}`;
+
 	}
 
 	// part of Phase I
@@ -90,9 +111,8 @@ export class Cell {
 				// lowest substrate determines growth rate.
 				const minS = Math.min(this.co2, this.h2o);
 
-				const rate = PHOTOSYNTHESIS_BASE_RATE * minS; // growth per tick
-				//TODO: should also depend on solar energy
-
+				const rate = this.stellarEnergy * PHOTOSYNTHESIS_BASE_RATE * minS; // growth per tick
+				
 				const amount = Math.min(sp.biomass * rate, this.co2, this.o2);
 				assert (amount >= 0);
 
@@ -189,4 +209,75 @@ export class Cell {
 			sp.biomass -= amount;
 		}
 	}
+
+	diffuseProperty(other, prop, pct_exchange) {
+		const netAmount = (this[prop] * pct_exchange) - (other[prop] * pct_exchange);
+		this[prop] -= netAmount;
+		other[prop] += netAmount;
+		assert(this[prop] >= 0);
+		assert(other[prop] >= 0);
+	}
+
+	diffusionTo(other) {
+
+		// diffusion of CO2
+		{
+			// if CO2 is solid, only a small percentage will diffuse
+			const pct_exchange = this.temperature < CO2_BOILING_POINT ? 0.01 : 0.1;
+			this.diffuseProperty(other, 'co2', pct_exchange);
+		}
+
+		// diffusion of H2O
+		{
+			const pct_exchange = this.temperature < H2O_MELTING_POINT ? 0.01 : 0.1;
+			this.diffuseProperty(other, 'h2o', pct_exchange);
+		}
+
+		// diffusion of o2
+		{
+			const pct_exchange = 0.1;
+			this.diffuseProperty(other, 'o2', pct_exchange);
+		}
+
+		// heat diffusion.
+		// a percentage of heat always diffuses...
+		// TODO to be realistic, we should also make this dependent on weather
+		{
+			const pct_exchange = 0.1;
+			this.diffuseProperty(other, 'heat', pct_exchange);
+		}
+	}
+
+	// calculate heat, albedo, greenhouse effect
+	updatePhysicalProperties() {
+		this.temperature = this.heat / SURFACE_HEAT_CAPACITY; // In Kelvin
+		
+		// TODO
+		// this.albedo = + this.sumLivingBiomass();
+		// this.albedo = 1.0;
+
+		// receive fixed amount of energy from the sun. TODO: influenced by albedo
+		this.heat += this.stellarEnergy;
+
+		// percentage of heat radiates out to space
+		const heatLossPct = 0.01; // TODO: influenced by greenhouse effect and albedo
+		this.heatLoss = this.heat * heatLossPct;
+		this.heat -= (this.heatLoss);
+	}
+
+	updateStats(planet) {
+		planet.co2 += this.co2;
+		planet.o2 += this.o2;
+		planet.h2o += this.h2o;
+		planet.deadBiomass += this.deadBiomass;
+
+		for (const { speciesId, biomass } of this._species) {
+			if (!(speciesId in planet.species)) {
+				planet.species[speciesId] = 0;
+			}
+			planet.species[speciesId] += biomass;
+		}
+
+	}
+
 }

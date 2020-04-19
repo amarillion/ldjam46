@@ -32,6 +32,7 @@ export default class extends Phaser.Scene {
 		console.log("Game.create called");
 
 		this.logElement = document.getElementById("log");
+		this.planetElement = document.getElementById("planet");
 
 		this.gridView = new GridView(this, this.sim.grid);
 		this.speciesView = new SpeciesView(this, this.sim.grid);
@@ -81,7 +82,8 @@ export default class extends Phaser.Scene {
 		this.sim.tick();
 		this.gridView.update();
 		this.speciesView.update();
-		this.logElement.innerText = `Tick: ${this.sim.tickCounter}\n${this.currentCell}`;
+		this.logElement.innerText = this.currentCell.toString();
+		this.planetElement.innerText = `Tick: ${this.sim.tickCounter}\n${this.sim.planet}`;
 	}
 
 	update (time, delta) {
@@ -139,7 +141,16 @@ export default class extends Phaser.Scene {
 			this.setFilter(4);
 			event.stopPropagation();
 			break;
+
+		case Phaser.Input.Keyboard.KeyCodes.FIVE:
+			this.setFilter(5);
+			event.stopPropagation();
+			break;
 	
+		case Phaser.Input.Keyboard.KeyCodes.SIX:
+			this.setFilter(6);
+			event.stopPropagation();
+			break;
 		}
 	}
 
@@ -164,6 +175,16 @@ export default class extends Phaser.Scene {
 			// view h2o
 			this.gridView.color = 0x0000FF;
 			this.gridView.setProp((cell) => cell.h2o);
+			break;
+		case 5:
+			// view heat ( == temp)
+			this.gridView.color = 0xFFFF00;
+			this.gridView.setProp((cell) => cell.heat, true);
+			break;
+		case 6:
+			// view stellar energy
+			this.gridView.color = 0xFF8800;
+			this.gridView.setProp((cell) => cell.stellarEnergy);
 			break;
 		}
 	}

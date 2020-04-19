@@ -2,13 +2,14 @@
 // based on code from helixgraph examples (https://amarillion.github.io/helixgraph/)
 import { randomInt } from './random.js';
 import { Cell } from './Cell.js';
+import { assert } from './assert.js';
 
 export const NORTH = 0x01;
 export const EAST = 0x02;
 export const SOUTH = 0x04;
 export const WEST = 0x08;
 
-const DEFAULT_CELL_FACTORY = (x, y) => { return new Cell(x, y); };
+const CELL_FACTORY = (height) => (x, y) => { return new Cell(x, y, ((y * 160 / (height - 1)) - 80)); };
 
 /*
 A rectangular grid of width x height cells.
@@ -16,7 +17,7 @@ The actual cell type is determined by the cellFactory constructor argument.
 */
 export class Grid {
 
-	constructor(width, height, cellFactory = DEFAULT_CELL_FACTORY) {
+	constructor(width, height, cellFactory = CELL_FACTORY(height)) {
 		this.cellFactory = cellFactory;
 		this.width = width;
 		this.height = height;	
@@ -67,6 +68,21 @@ export class Grid {
 	*eachNode() {
 		for (const node of this._data) {
 			if (node) yield node;
+		}
+	}
+
+	// generator going through all cells, but in non-sequential order
+	*eachNodeCheckered() {
+		const PRIME = 523;
+
+		// we go in prime steps. Make sure that the grid isn't accidentally a multiple of this prime number
+		assert ((this._data.length % PRIME) !== 0);
+		
+		let pos = 0;
+		for (let i = 0; i < this._data.length; ++i) {
+			pos = (pos + PRIME) % this._data.length;
+			const node = this._data[pos];
+			yield node;
 		}
 	}
 

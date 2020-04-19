@@ -2,7 +2,7 @@
 
 export const MAX_SPECIES_PER_CELL = 8;
 
-export const PHOTOSYNTHESIS_BASE_RATE = 4.0e-5; // rate per mol co2 per mol h2o per mol organism per GJ of solar energy
+export const PHOTOSYNTHESIS_BASE_RATE = 3.0e-5; // rate per mol co2 per mol h2o per mol organism per GJ of solar energy
 export const CONVERSION_BASE_RATE = 1.0e-3; // rate per mol substrate, per mol organism
 export const RESPIRATION_BASE_RATE = 1.0e-3; // rate per mol substrate, per mol organism
 export const DEATH_RATE = 0.01; // percentage death per turn. will be modified by fitness factor

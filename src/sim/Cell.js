@@ -233,6 +233,12 @@ Species: ${this.speciesToString()}`;
 
 		for (const sp of this._species) {
 			const amount = sp.biomass * 0.01;
+			
+			// do not migrate less than one unit - otherwise it will die immediately and will be a huge drain on early growth
+			if (amount < 1.0) {
+				continue;
+			}
+
 			other.addSpecies(sp.speciesId, amount);
 			sp.biomass -= amount;
 		}

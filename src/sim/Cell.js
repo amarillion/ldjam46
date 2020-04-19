@@ -2,6 +2,7 @@ import {
 	MAX_SPECIES_PER_CELL, 
 	PHOTOSYNTHESIS_BASE_RATE, 
 	RESPIRATION_BASE_RATE, 
+	CONVERSION_BASE_RATE, 
 	DEATH_RATE,
 	START_HEAT,
 	START_CO2,
@@ -77,7 +78,7 @@ export class Cell {
 
 	// string representation of cell...
 	toString() {
-		return `[${this.x}, ${this.y}] ` +
+		return `[${this.x}, ${this.y}] Biotope: ${this.biotope}` +
 		`
 Heat: ${this.heat.toExponential(2)} GJ/km^2
 Temperature: ${this.temperature.toFixed(0)} K
@@ -97,21 +98,27 @@ Species: ${this.speciesToString()}`;
 	// part of Phase I
 	growAndDie() {
 		// each species should grow and die based on local fitness.
-		// each species has 3 possible roles:
 
-		// consumer, producer, reducer
 
 		for (const sp of this._species) {
-			
-			// PHOTOSYNTHESIS
-
 			const info = START_SPECIES[sp.speciesId];
 
+			let fitness = 1.0;
+			assert (this.biotope in info.biotopeTolerances);
+			fitness *= info.biotopeTolerances[this.biotope];
+			
+			//TODO: fitness is also affected by temperature
+			//TODO: fitness is affected by presence of symbionts
+	
+			// fitness must always be a value between 0.0 and 1.0
+			assert(fitness >= 0.0 && fitness <= 1.0);
+
+			// each species has 3 possible roles:
+			// consumer, producer, reducer	
 			if (info.role === ROLE.PRODUCER) {
 				// lowest substrate determines growth rate.
 				const minS = Math.min(this.co2, this.h2o);
-
-				const rate = this.stellarEnergy * PHOTOSYNTHESIS_BASE_RATE * minS; // growth per tick
+				const rate = fitness * this.stellarEnergy * PHOTOSYNTHESIS_BASE_RATE * minS; // growth per tick
 				
 				const amount = Math.min(sp.biomass * rate, this.co2, this.o2);
 				assert (amount >= 0);
@@ -130,9 +137,9 @@ Species: ${this.speciesToString()}`;
 
 					const interaction = info.interactionMap[other.speciesId];
 					if (interaction === INTERACTION.EAT) {
-						// sp eats other
-						// lowest substrate determines growth rate.
-						const rate = RESPIRATION_BASE_RATE * other.biomass;
+						// sp(ecies) eats other (species)
+						// take some of the biomass from other, and adopt it as own biomass
+						const rate = fitness * CONVERSION_BASE_RATE * other.biomass;
 						const amount = Math.min(sp.biomass * rate, other.biomass);
 
 						assert (amount >= 0);
@@ -145,7 +152,8 @@ Species: ${this.speciesToString()}`;
 				}
 			}
 			else if  (info.role === ROLE.REDUCER) {
-				const rate = RESPIRATION_BASE_RATE * this.deadBiomass;
+				// reducers take some of the dead biomass, and adopt it as their own biomass
+				const rate = fitness * CONVERSION_BASE_RATE * this.deadBiomass;
 				const amount = Math.min(sp.biomass * rate, this.deadBiomass);
 
 				assert (amount >= 0);
@@ -157,10 +165,11 @@ Species: ${this.speciesToString()}`;
 			}
 
 			if (info.role !== ROLE.PRODUCER) {
-				// simulate respiration
+				// simulate respiration for consumers and reducers.
 				// lowest substrate determines growth rate.
 				const minS = Math.min(sp.biomass, this.o2);
-				const rate = RESPIRATION_BASE_RATE * minS; // growth per tick
+				// not affected by fitness - all species consume oxygen at a given rate
+				const rate = RESPIRATION_BASE_RATE * minS;
 				const amount = Math.min(sp.biomass, sp.biomass * rate, this.o2);
 
 				assert (amount >= 0);
@@ -173,13 +182,14 @@ Species: ${this.speciesToString()}`;
 				assert (sp.biomass >= 0);
 			}
 
-			const fitness = 1.0; //TODO: modify based on temperature and biotope
-
 			// all species die at a given rate...
 			{
 				assert(sp.biomass >= 0, `Wrong value ${sp.biomass} ${sp.speciesId}`);
 
-				const rate = DEATH_RATE / fitness;
+				// the lower the fitness, the higher the death rate
+				// divisor has a minimum just above 0, to avoid division by 0
+				// death rate has a maximum of 1.0 (instant death)
+				const rate = Math.min(1.0, DEATH_RATE / Math.max(fitness, 0.0001));
 				const amount = Math.min(sp.biomass * rate, sp.biomass);
 
 				assert (amount >= 0);
@@ -222,14 +232,15 @@ Species: ${this.speciesToString()}`;
 
 		// diffusion of CO2
 		{
-			// if CO2 is solid, only a small percentage will diffuse
-			const pct_exchange = this.temperature < CO2_BOILING_POINT ? 0.01 : 0.1;
+			// if CO2 is solid, a smaller percentage will diffuse
+			const pct_exchange = this.temperature < CO2_BOILING_POINT ? 0.001 : 0.1;
 			this.diffuseProperty(other, 'co2', pct_exchange);
 		}
 
 		// diffusion of H2O
 		{
-			const pct_exchange = this.temperature < H2O_MELTING_POINT ? 0.01 : 0.1;
+			// if H2O is solid, a smaller percentage will diffuse
+			const pct_exchange = this.temperature < H2O_MELTING_POINT ? 0.001 : 0.1;
 			this.diffuseProperty(other, 'h2o', pct_exchange);
 		}
 

@@ -4,9 +4,9 @@ import { Species } from "./Species.js";
 
 export class Sim {
 
-	constructor() {
+	constructor(w, h) {
 		// TODO: return to larger grid
-		this.grid = new Grid(20, 10); // grid for cellular automata
+		this.grid = new Grid(w, h); // grid for cellular automata
 		
 		this.species = {}; // map of species by id.
 		this.planet = new Planet(); // planetary properties

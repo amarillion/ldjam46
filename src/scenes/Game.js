@@ -13,8 +13,6 @@ export default class extends Phaser.Scene {
 	}
 
 	init () {
-		console.log("Game.init called");
-		this.sim = new Sim();
 
 		this.time.addEvent({
 			delay: 500, // ms
@@ -24,13 +22,15 @@ export default class extends Phaser.Scene {
 			loop: true
 		});
 
-		this.currentCell = this.sim.grid.get(0, 0);
 	}
 
 	preload () {}
 	
 	create () {
 		console.log("Game.create called");
+
+		this.planetMap = this.add.tilemap('planetScape');
+		this.initSim(this.planetMap);
 
 		this.logElement = document.getElementById("log");
 		this.planetElement = document.getElementById("planet");
@@ -39,7 +39,6 @@ export default class extends Phaser.Scene {
 		// this.speciesView = new SpeciesView(this, this.sim.grid);
 		this.cursor = new Cursor(this);
 
-		this.planetMap = this.add.tilemap('planetScape');
 		const tileset = this.planetMap.addTilesetImage('biotope','biotopeTiles');
 		this.backgroundLayer = this.planetMap.createStaticLayer('Tile Layer 1', tileset);	
 
@@ -80,6 +79,23 @@ export default class extends Phaser.Scene {
 			font: '32px Bangers',
 			fill: '#7744ff'
 		});
+
+	}
+
+	initSim(map) {
+		this.sim = new Sim(map.width, map.height);
+		this.currentCell = this.sim.grid.get(0, 0);
+		this.initBiotopes(map);
+	}
+
+	initBiotopes(map) {
+		// copy biotopes from layer to cells
+		for (let x = 0; x < map.width; ++x) {
+			for (let y = 0; y < map.height; ++y) {
+				const biotope = map.getTileAt(x, y).index - 1;
+				this.sim.grid.get(x, y).biotope = biotope;
+			}
+		}
 
 	}
 

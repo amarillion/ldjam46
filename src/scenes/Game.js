@@ -80,6 +80,12 @@ export default class extends Phaser.Scene {
 			fill: '#7744ff'
 		});
 
+		this.scale.on('resize', function (gameSize) {
+			var width = gameSize.width;
+			var height = gameSize.height;
+			this.cameras.resize(width, height);
+		}, this);
+
 	}
 
 	initSim(map) {

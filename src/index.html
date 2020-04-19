@@ -14,18 +14,37 @@
         body {
             margin: 0;
             padding: 0;
+            width: 100vw;
+            height: 100vh;
 
             display: grid;
-            grid-template-columns: 3fr 1fr;
+            grid-template-columns: auto minmax(0, 1fr);
+            grid-template-rows: auto minmax(0, 1fr);
+            background: #041849;
+            color: #8285a9;
+        }
+
+        .border {
+            border-image:
+                url("/assets/images/border39px.png") /* source */
+                13 /                      /* slice */
+                13px /                    /* width */
+                0px                     /* outset */
+                round;                  /* repeat */
+            padding: 13px;
+        }
+
+        pre {
+            overflow: hidden;
         }
     </style>
 </head>
 
 <body>
-    <div id="content"></div>
-    <pre id="log"></pre>
-    <pre id="species">Species</pre>
-    <pre id="planet">Planet</pre>
+    <div id="content" class="border"></div>
+    <div><pre id="log" ></pre></div>
+    <exo-species-window  ></exo-species-window>
+    <div><pre id="planet" class="border">Planet</pre></div>
 </body>
 
 </html>

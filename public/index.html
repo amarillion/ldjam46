@@ -2,7 +2,26 @@
         body {
             margin: 0;
             padding: 0;
+            width: 100vw;
+            height: 100vh;
 
             display: grid;
-            grid-template-columns: 3fr 1fr;
-        }</style></head><body><div id="content"></div><pre id="log"></pre><pre id="species">Species</pre><pre id="planet">Planet</pre><script src="vendor.639d896e8d4c2e64d417.js?639d896e8d4c2e64d417"></script><script src="app.639d896e8d4c2e64d417.js?639d896e8d4c2e64d417"></script></body></html>
+            grid-template-columns: auto minmax(0, 1fr);
+            grid-template-rows: auto minmax(0, 1fr);
+            background: #041849;
+            color: #8285a9;
+        }
+
+        .border {
+            border-image:
+                url("/assets/images/border39px.png") /* source */
+                13 /                      /* slice */
+                13px /                    /* width */
+                0px                     /* outset */
+                round;                  /* repeat */
+            padding: 13px;
+        }
+
+        pre {
+            overflow: hidden;
+        }</style></head><body><div id="content" class="border"></div><div><pre id="log"></pre></div><exo-species-window></exo-species-window><div><pre id="planet" class="border">Planet</pre></div><script src="vendor.565da4c739b8d6a215e3.js?565da4c739b8d6a215e3"></script><script src="app.565da4c739b8d6a215e3.js?565da4c739b8d6a215e3"></script></body></html>

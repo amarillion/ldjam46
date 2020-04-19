@@ -3,7 +3,8 @@ SHELL=/bin/bash
 
 
 BIOTOPE_PNG=assets/images/biotope.png
-BIOTOPE_FILES=$(wildcard assets/images/biotope/*.png)
+BIOTOPE_BASENAMES=sorry_sulfuric2.png mountain3.png sulfur4.png lava1.png canyon1.png lowland0.png salt4.png canyon2.png
+BIOTOPE_FILES=$(addprefix assets/images/biotope/, $(BIOTOPE_BASENAMES))
 
 SPECIES_PNG=assets/images/species.png
 SPECIES_FILES=$(wildcard assets/images/species/*.png)

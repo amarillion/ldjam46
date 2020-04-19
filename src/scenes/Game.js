@@ -32,8 +32,8 @@ export default class extends Phaser.Scene {
 		this.planetMap = this.add.tilemap('planetScape');
 		this.initSim(this.planetMap);
 
-		this.logElement = document.getElementById("log");
-		this.planetElement = document.getElementById("planet");
+		this.logElement = document.getElementsByTagName("exo-detail-window")[0];
+		this.planetElement = document.getElementsByTagName("exo-planet-window")[0];
 
 		this.gridView = new GridView(this, this.sim.grid);
 		// this.speciesView = new SpeciesView(this, this.sim.grid);
@@ -114,8 +114,8 @@ export default class extends Phaser.Scene {
 		this.sim.tick();
 		this.gridView.update();
 		// this.speciesView.update();
-		this.logElement.innerText = this.currentCell.toString();
-		this.planetElement.innerText = `Tick: ${this.sim.tickCounter}\n${this.sim.planet}`;
+		this.logElement.text = this.currentCell.toString();
+		this.planetElement.text = `Tick: ${this.sim.tickCounter}\n${this.sim.planet}`;
 		this.updateSpeciesMap();
 	}
 

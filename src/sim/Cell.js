@@ -73,7 +73,7 @@ export class Cell {
 	}
 
 	speciesToString() {
-		return this._species.map(i => `${i.speciesId}: ${i.biomass.toFixed(1)} `).join();
+		return this._species.map(i => `${i.speciesId}: ${i.biomass.toFixed(1)}`).join('\n  ');
 	}
 
 	// string representation of cell...

@@ -17,7 +17,7 @@ export class Planet {
 	}
 
 	speciesToString() {
-		return Object.entries(this.species).map((speciesId, biomass) => `${speciesId}: ${biomass.toFixed(1)} `).join();
+		return Object.entries(this.species).map(([speciesId, biomass]) => `${speciesId}: ${biomass.toFixed(0)}`).join('\n  ');
 	}
 
 	// string representation of cell...

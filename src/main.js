@@ -6,6 +6,8 @@ import GameScene from './scenes/Game.js';
 
 // register components
 import './components/SpeciesWindow.js';
+import './components/PlanetWindow.js';
+import './components/DetailWindow.js';
 
 const calcGameWidth = () => window.innerWidth * 0.67;
 const calcGameHeight = () => window.innerHeight * 0.67;

@@ -2,9 +2,10 @@ import Phaser from 'phaser';
 
 import { Sim } from '../sim/Sim.js';
 import { GridView } from '../view/GridView.js';
-import { SpeciesView } from '../view/SpeciesView.js';
+// import { SpeciesView } from '../view/SpeciesView.js';
 import { TILESIZE } from '../sim/Constants.js';
 import { Cursor } from '../view/Cursor.js';
+import { START_SPECIES } from '../sim/StartSpecies.js';
 
 export default class extends Phaser.Scene {
 	constructor () {
@@ -35,11 +36,20 @@ export default class extends Phaser.Scene {
 		this.planetElement = document.getElementById("planet");
 
 		this.gridView = new GridView(this, this.sim.grid);
-		this.speciesView = new SpeciesView(this, this.sim.grid);
+		// this.speciesView = new SpeciesView(this, this.sim.grid);
 		this.cursor = new Cursor(this);
 
+		this.planetMap = this.add.tilemap('planetScape');
+		const tileset = this.planetMap.addTilesetImage('biotope','biotopeTiles');
+		this.backgroundLayer = this.planetMap.createStaticLayer('Tile Layer 1', tileset);	
+
 		this.add.existing(this.gridView);
-		this.add.existing(this.speciesView);
+
+		this.speciesMap = this.add.tilemap('speciesMap');
+		const tileset2 = this.speciesMap.addTilesetImage('species','speciesTiles');
+		this.backgroundLayer = this.speciesMap.createDynamicLayer('Tile Layer 1', tileset2);
+
+		// this.add.existing(this.speciesView);
 		this.add.existing(this.cursor);
 
 		this.input.on('pointermove', this.onMouseMove, this);
@@ -81,9 +91,30 @@ export default class extends Phaser.Scene {
 	tickAndLog() {
 		this.sim.tick();
 		this.gridView.update();
-		this.speciesView.update();
+		// this.speciesView.update();
 		this.logElement.innerText = this.currentCell.toString();
 		this.planetElement.innerText = `Tick: ${this.sim.tickCounter}\n${this.sim.planet}`;
+		this.updateSpeciesMap();
+	}
+
+	updateSpeciesMap() {
+		
+		for (const cell of this.sim.grid.eachNode()) {
+			const mx = (cell.x * 2) + 0.5;
+			const my = (cell.y * 2) + 0.5;
+			
+			let dx = 0.5;
+			let dy = 0.5;
+
+			// get top 4 species from cell...
+			for (const { speciesId, biomass } of cell.species.slice(0, 4)) {
+				if (biomass < 50) continue;
+				const tileIdx = START_SPECIES[speciesId].tileIdx;
+				this.speciesMap.putTileAt(tileIdx + 1, mx + dx, my + dy);
+				// rotate 90 degrees
+				[dx, dy] = [-dy, dx];
+			}
+		}
 	}
 
 	update (time, delta) {

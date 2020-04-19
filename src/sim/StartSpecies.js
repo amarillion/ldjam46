@@ -18,7 +18,8 @@ export const START_SPECIES = [
 	{
 		name: 'unnamed_algae_0',
 		role: ROLE.PRODUCER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
-		
+		tileIdx: 0,
+
 		// for each other species, define how they interact
 		// 1: EAT will mean that this species will eat species 1.
 		// being carnivore / omnivore / herbivore is implicit
@@ -59,6 +60,7 @@ export const START_SPECIES = [
 	{
 		name: 'unnamed_herbivore_1',
 		role: ROLE.CONSUMER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
+		tileIdx: 4,
 
 		// for each other species, define how they interact
 		// 1: EAT will mean that this species will eat species 1.
@@ -100,6 +102,7 @@ export const START_SPECIES = [
 	{
 		name: 'unnamed_fungus_2',
 		role: ROLE.REDUCER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
+		tileIdx: 1,
 
 		// for each other species, define how they interact
 		// 1: EAT will mean that this species will eat species 1.
@@ -140,6 +143,7 @@ export const START_SPECIES = [
 	{
 		name: 'unnamed_algae_3',
 		role: ROLE.PRODUCER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
+		tileIdx: 2,
 		
 		// for each other species, define how they interact
 		// 1: EAT will mean that this species will eat species 1.

@@ -14,6 +14,12 @@ export default class extends Phaser.Scene {
 		this.load.image('loaderBg', './assets/images/loader-bg.png');
 		this.load.image('loaderBar', './assets/images/loader-bar.png');
 
+		this.load.image('biotopeTiles', './assets/images/biotope.png');
+		this.load.tilemapTiledJSON('planetScape', './assets/planetscape.json');
+
+		this.load.image('speciesTiles', './assets/images/species.png');
+		this.load.tilemapTiledJSON('speciesMap', './assets/speciesmap.json');
+
 		WebFont.load({
 			google: {
 				families: ['Bangers']

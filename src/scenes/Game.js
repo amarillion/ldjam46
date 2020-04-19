@@ -39,7 +39,12 @@ export default class extends Phaser.Scene {
 		
 		this.speciesElement.introduceSpeciesCallback = (selectedSpecies) => {
 			if (this.currentCell) {
-				this.currentCell.addSpecies(selectedSpecies, 100);
+				this.currentCell.addSpecies(selectedSpecies, 10);
+				this.speciesElement.disableSpecies(selectedSpecies, this.sim.tick);
+
+				// very crude hack. We should trigger on a particular tick instead
+				setTimeout(() => this.speciesElement.enableSpecies(selectedSpecies), 20000);
+				
 			}
 		};
 
@@ -136,13 +141,17 @@ export default class extends Phaser.Scene {
 			let dx = 0.5;
 			let dy = 0.5;
 
+			for (let i = 0; i < 4; ++i) {
+				this.speciesMap.removeTileAt(mx + dx, my + dy);
+				[dx, dy] = [-dy, dx]; // rotate 90 degrees
+			}
+
 			// get top 4 species from cell...
 			for (const { speciesId, biomass } of cell.species.slice(0, 4)) {
-				if (biomass < 50) continue;
+				if (biomass < 5.0) continue;
 				const tileIdx = START_SPECIES[speciesId].tileIdx;
 				this.speciesMap.putTileAt(tileIdx + 1, mx + dx, my + dy);
-				// rotate 90 degrees
-				[dx, dy] = [-dy, dx];
+				[dx, dy] = [-dy, dx]; // rotate 90 degrees
 			}
 		}
 	}

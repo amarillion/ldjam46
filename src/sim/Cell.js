@@ -9,7 +9,8 @@ import {
 	CO2_BOILING_POINT,
 	H2O_MELTING_POINT,
 	MAX_STELLAR_HEAT_IN,
-	SURFACE_HEAT_CAPACITY
+	SURFACE_HEAT_CAPACITY,
+	START_H2O
 } from "./Constants";
 import { START_SPECIES, ROLE, INTERACTION } from "./StartSpecies";
 import { assert } from "./assert";
@@ -22,10 +23,10 @@ export class Cell {
 		this.y = y;
 
 		// the following are all in Mol
-		this.deadBiomass = 10; // dead organic material, represented by formula ch2o
+		this.deadBiomass = 0; // dead organic material, represented by formula ch2o
 		this.co2 = START_CO2;
-		this.o2 = 10;
-		this.h2o = 1000;
+		this.o2 = 0;
+		this.h2o = START_H2O;
 		this.latitude = latitude;
 		this.heat = START_HEAT;
 		
@@ -63,8 +64,25 @@ export class Cell {
 	maxSpeciesCheck() {
 		this.sortSpecies();
 		if (this._species.length > MAX_SPECIES_PER_CELL) {
-			const last = this._species.pop();
-			this.deadBiomass += last.biomass; // biomass converted from dead species
+			this.removeLowestSpecies();
+		}
+	}
+
+	removeLowestSpecies() {
+		const last = this._species.pop();
+		this.deadBiomass += last.biomass; // biomass converted from dead species
+	}
+
+	// clean up pink elephants (as in: there are not 0.0001 pink elephants in this room)
+	// if the amount of species drops below 1.0 mol, then the remainder dies and is cleaned up completely.
+	pinkElephantCheck() {
+		this.sortSpecies();
+
+		if (this._species.length === 0) return;
+
+		const last = this._species[this._species.length-1];
+		if (last.biomass < 1.0) {
+			this.removeLowestSpecies();
 		}
 	}
 
@@ -120,7 +138,7 @@ Species: ${this.speciesToString()}`;
 				const minS = Math.min(this.co2, this.h2o);
 				const rate = fitness * this.stellarEnergy * PHOTOSYNTHESIS_BASE_RATE * minS; // growth per tick
 				
-				const amount = Math.min(sp.biomass * rate, this.co2, this.o2);
+				const amount = Math.min(sp.biomass * rate, this.co2, this.h2o);
 				assert (amount >= 0);
 
 				this.co2 -= amount;
@@ -207,7 +225,7 @@ Species: ${this.speciesToString()}`;
 		assert (this.h2o >= 0);
 		assert (this.deadBiomass >= 0);
 
-		this.sortSpecies();
+		this.pinkElephantCheck();
 	}
 
 	migrateTo(other) {

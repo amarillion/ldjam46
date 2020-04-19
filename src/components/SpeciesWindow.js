@@ -64,6 +64,11 @@ class SpeciesWindow extends HTMLElement {
 		transform: translateY(4px);
 	}
 
+	input.species-input:disabled + .palette-span {
+		border: 3px solid #777777;
+		background-color: #444444;
+	}
+
 	input.species-input + .palette-span:hover {
 		background-color: #5CBF60; /* Green */
 		color: white;
@@ -74,10 +79,10 @@ class SpeciesWindow extends HTMLElement {
 	<div class="main">
 		<div class="buttonBar">
 			
-		${this.renderButton(0, './assets/images/species/plant0.png')}
-		${this.renderButton(1, './assets/images/species/herbivore0.png')}
-		${this.renderButton(2, './assets/images/species/fungi0.png')}
-		${this.renderButton(3, './assets/images/species/plant1.png')}
+		${this.createButton(0, './assets/images/species/plant0.png')}
+		${this.createButton(1, './assets/images/species/herbivore0.png')}
+		${this.createButton(2, './assets/images/species/fungi0.png')}
+		${this.createButton(3, './assets/images/species/plant1.png')}
 			
 		</div>	
 		<div id="text">
@@ -88,9 +93,10 @@ class SpeciesWindow extends HTMLElement {
 `;
 	}
 	
-	renderButton(value, imageUrl) {
+	createButton(value, imageUrl) {
 		return `<label class="palette-container">
 				<input 
+					id="species_${value}"
 					class="species-input" 
 					name="species-group" 
 					type="radio" 
@@ -101,6 +107,7 @@ class SpeciesWindow extends HTMLElement {
 				</input>
 			</label>`;
 	}
+
 	set introduceSpeciesCallback(val) {
 		this._introduceSpeciesCallback = val;
 	}
@@ -123,7 +130,19 @@ class SpeciesWindow extends HTMLElement {
 			}
 		});
 	}
- 
+
+	enableSpecies(val) {
+		const relevantInput = this.shadowRoot.getElementById(`species_${val}`);
+		relevantInput.disabled = false;
+	}
+
+	disableSpecies(val) {
+		const relevantInput = this.shadowRoot.getElementById(`species_${val}`);
+		relevantInput.disabled = true;
+		relevantInput.checked = false;
+		this.selectedSpecies = null;
+	}
+
 }
 
 customElements.define('exo-species-window', SpeciesWindow);

@@ -1,3 +1,5 @@
+import { START_SPECIES } from "../sim/StartSpecies";
+
 class SpeciesWindow extends HTMLElement {
 
 	constructor() {
@@ -78,12 +80,9 @@ class SpeciesWindow extends HTMLElement {
 
 	<div class="main">
 		<div class="buttonBar">
-			
-		${this.createButton(0, './assets/images/species/plant0.png')}
-		${this.createButton(1, './assets/images/species/herbivore0.png')}
-		${this.createButton(2, './assets/images/species/fungi0.png')}
-		${this.createButton(3, './assets/images/species/plant1.png')}
-			
+
+		${START_SPECIES.map((info, idx) => this.createButton(idx, info.iconUrl)).join('')}
+
 		</div>	
 		<div id="text">
 			Lorem ipsum...
@@ -119,7 +118,10 @@ class SpeciesWindow extends HTMLElement {
 			elt.addEventListener("click", (event) => {
 				console.log(`Selected species ${event.target.value}`, { event }); 
 				this.selectedSpecies = event.target.value;
-				this.shadowRoot.getElementById('text').innerText = `Flavour text about species ${this.selectedSpecies}`;
+
+				const info = START_SPECIES[this.selectedSpecies];
+				const text = `${info.backstory}\nalbedo: ${info.albedo}\nTemp range: ${info.temperatureRange[0]}-${info.temperatureRange[1]} K`;
+				this.shadowRoot.getElementById('text').innerText = text;
 			});
 		});
 		

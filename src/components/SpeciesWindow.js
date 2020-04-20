@@ -112,8 +112,6 @@ class SpeciesWindow extends HTMLElement {
 	}
 
 	connectedCallback() {
-		console.log("connected callback");
-
 		this.shadowRoot.querySelectorAll('input').forEach((elt) => {
 			elt.addEventListener("click", (event) => {
 				this.selectedSpecies = event.target.value;

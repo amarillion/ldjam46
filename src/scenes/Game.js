@@ -99,6 +99,8 @@ export default class extends Phaser.Scene {
 			this.cameras.resize(width, height);
 		}, this);
 
+		this.game.musicPlayer.play('ExoMusicIntro', true);
+		this.game.musicPlayer.play('ExoMusicLoop', false);
 	}
 
 	initSim(map) {

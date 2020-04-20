@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import BootScene from './scenes/Boot.js';
 import SplashScene from './scenes/Splash.js';
 import GameScene from './scenes/Game.js';
+import MenuScene from './scenes/Menu.js';
 
 // register components
 import './components/SpeciesWindow.js';
@@ -31,7 +32,7 @@ const config = {
 
 
 const gameConfig = Object.assign(config, {
-	scene: [BootScene, SplashScene, GameScene]
+	scene: [BootScene, SplashScene, GameScene, MenuScene]
 });
 
 class Game extends Phaser.Game {

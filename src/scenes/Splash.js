@@ -23,7 +23,7 @@ export default class extends Phaser.Scene {
 
 	create () {
 		this.game.musicPlayer.init();
-		this.scene.start('GameScene');
+		this.scene.start('MenuScene');
 
 	}
 

@@ -1,4 +1,5 @@
 import { START_SPECIES } from "../sim/StartSpecies";
+import { openDialog } from "./Dialog";
 
 class SpeciesWindow extends HTMLElement {
 
@@ -26,7 +27,7 @@ class SpeciesWindow extends HTMLElement {
 			margin: 10px;
 		}
 
-		#speciesButton {
+		button {
 			width: 200px;
 			margin: 8px;
 		}
@@ -87,7 +88,10 @@ class SpeciesWindow extends HTMLElement {
 		<div id="text">
 			Lorem ipsum...
 		</div>
-		<button id="speciesButton">Introduce species</button>
+		<div>
+			<button id="speciesButton">Introduce species</button>
+			<button id="infoButton">Info...</button>
+		</div>
 	</div>
 `;
 	}
@@ -128,6 +132,24 @@ class SpeciesWindow extends HTMLElement {
 				this._introduceSpeciesCallback(this.selectedSpecies);
 			}
 		});
+
+		this.shadowRoot.querySelector("#infoButton").addEventListener("click", (event) => { 
+			console.log("Info...");
+			if (this.selectedSpecies !== null) {
+				const info = START_SPECIES[this.selectedSpecies];
+				openDialog(`<h1>Species Information</h1>
+				<img src="${info.coverArt}" style="width: 50%; float: left;	padding: 10px;">
+				<p>
+				${info.backstory}
+				</p>
+				<dl>
+				<dd>albedo: ${info.albedo}
+				<dd>Temp range: ${info.temperatureRange[0]}-${info.temperatureRange[1]} K
+				</dl>
+				`);
+			}
+		});
+
 	}
 
 	enableSpecies(val) {

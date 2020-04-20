@@ -13,24 +13,29 @@ class Dialog extends HTMLElement {
 				width: 100%;
 			}
 
+			.Container {
+				height: 100%;
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				position: fixed;
+				bottom: 0px;
+				z-index: 1001;
+				opacity: 1;
+			}
+
 			.Dialog {
 				background: #fff;
 				border: 1px solid #dedede;
-				z-index: 1001;
 
 				font-family: Helvetica,Tahoma,Arial,sans-serif;
 				font-size: 14px;
 				line-height: 1.4;
 
-				opacity: 1;
-				visibility: visible;
-				position: fixed;
-				top: 20%;
-				left: 10%;
-				right: 10%;
 				max-width: 80%;
-				/* position: fixed; left: 405px; top: 372.7px; visibility: visible; max-width: 450px; */
-
+				max-height: 80%;
 			}
 		
 			div {
@@ -40,7 +45,7 @@ class Dialog extends HTMLElement {
 			}
 		
 			.Dialog_Body {
-				overflow: auto;
+				overflow: hidden auto;
 				-webkit-overflow-scrolling: touch;
 				color: #44484a;
 				margin: 10px;
@@ -84,12 +89,14 @@ class Dialog extends HTMLElement {
 	
 		<div class="Backdrop" style="position: fixed; left: 0px; top: 0px; opacity: 0.9;"></div>
 
-		<div class="Dialog">
-			<div class="Dialog_Body">
-				<slot></slot>
-			</div>
-			<div class="Dialog_Buttons">
-				<a href="javascript:void(0)" id="Dialog_Button_0">Ok</a>
+		<div class="Container">
+			<div class="Dialog">
+				<div class="Dialog_Body">
+					<slot></slot>
+				</div>
+				<div class="Dialog_Buttons">
+					<a href="javascript:void(0)" id="Dialog_Button_0">Ok</a>
+				</div>
 			</div>
 		</div>
 	`;

@@ -34,11 +34,13 @@ biotopeTolerances:
 
 */
 
+
 export const START_SPECIES = [
 
 	{ // 0
 		name: 'Plant 0',
 		iconUrl: './assets/images/species/plant0.png',
+		coverArt: './assets/species_cover_art/platn_intro2.png',
 		tileIdx: 12,
 		color: 0x69F0AE,
 		role: ROLE.PRODUCER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
@@ -52,6 +54,7 @@ Lorem ipsum...`,
 	}, { // 1
 		name: 'Plant 1',
 		iconUrl: './assets/images/species/plant1.png',
+		coverArt: './assets/species_cover_art/platn_intro1.png',
 		tileIdx: 4,
 		color: 0x388E3C,
 		role: ROLE.PRODUCER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
@@ -65,6 +68,7 @@ Lorem ipsum...`,
 	}, { // 2
 		name: 'Herbivore 0',
 		iconUrl: './assets/images/species/herbivore0.png',
+		coverArt: './assets/species_cover_art/herbivore_intro0.png',
 		tileIdx: 11,
 		color: 0xF8BBD0,
 		role: ROLE.CONSUMER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
@@ -79,6 +83,7 @@ Lorem ipsum...`,
 	}, { // 3
 		name: 'Fungus 1',
 		iconUrl: './assets/images/species/fungi1.png',
+		coverArt: './assets/species_cover_art/fungi_intro0.png',
 		tileIdx: 13,
 		color: 0x8D6E63,
 		role: ROLE.REDUCER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
@@ -93,6 +98,7 @@ Lorem ipsum...`,
 	}, { // 4
 		name: 'Microbe 1',
 		iconUrl: './assets/images/species/microb1.png',
+		coverArt: './assets/species_cover_art/microb_intro1.png',
 		tileIdx: 1,
 		color: 0xFFFF00,
 		role: ROLE.CONSUMER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
@@ -105,6 +111,7 @@ Mid-game herbivore`,
 	}, { // 5
 		name: 'Microbe 2',
 		iconUrl: './assets/images/species/microb2.png',
+		coverArt: './assets/species_cover_art/microb_intro5.png',
 		tileIdx: 3,
 		color: 0x8C9EFF,
 		role: ROLE.REDUCER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
@@ -118,6 +125,7 @@ Mid-game fungus
 	}, { // 6
 		name: 'Catcrobe 2',
 		iconUrl: './assets/images/species/catcrobe2.png',
+		coverArt: './assets/species_cover_art/catcrobe_intro2.png',
 		tileIdx: 9,
 		color: 0xBA68C8,
 		role: ROLE.CONSUMER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
@@ -131,6 +139,7 @@ Early carnivore
 	}, { // 7
 		name: 'Plant 2',
 		iconUrl: './assets/images/species/microb4.png',
+		coverArt: './assets/species_cover_art/microb_intro4.png',
 		tileIdx: 6,
 		color: 0x18FFFF,
 		role: ROLE.PRODUCER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
@@ -144,6 +153,7 @@ Early carnivore
 	}, { // 8
 		name: 'Plant 3',
 		iconUrl: './assets/images/species/microb5.png',
+		coverArt: './assets/species_cover_art/microb_intro2.png',
 		tileIdx: 7,
 		color: 0x76FF03,
 		role: ROLE.PRODUCER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
@@ -157,6 +167,7 @@ Relatively poor albedo reduction compared to other late-game species - you'll ne
 	}, { // 9
 		name: 'Microbe 3',
 		iconUrl: './assets/images/species/microb3.png',
+		coverArt: './assets/species_cover_art/microb_intro7.png',
 		tileIdx: 8,
 		color: 0xBBDEFB,
 		role: ROLE.CONSUMER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
@@ -170,6 +181,7 @@ Relatively poor albedo reduction compared to other late-game species - you'll ne
 	}, { // 10
 		name: 'Donut 1',
 		iconUrl: './assets/images/species/donut1.png',
+		coverArt: './assets/species_cover_art/donut_intro1.png',
 		tileIdx: 5,
 		color: 0xFF8F00,
 		role: ROLE.REDUCER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER
@@ -184,6 +196,7 @@ Lorem ipsum...`,
 	}, { // 11
 		name: 'Angry 1',
 		iconUrl: './assets/images/species/angry1.png',
+		coverArt: './assets/species_cover_art/angry_intro1.png',
 		tileIdx: 10,
 		color: 0xFF3D00,
 		role: ROLE.CONSUMER, // one of ROLE.PRODUCER, ROLE.CONSUMER, ROLE.REDUCER

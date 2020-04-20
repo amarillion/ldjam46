@@ -88,12 +88,6 @@ export default class extends Phaser.Scene {
 
 		this.controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
 
-
-		this.add.text(0, 0, 'Exo Keeper', {
-			font: '32px Bangers',
-			fill: '#7744ff'
-		});
-
 		this.scale.on('resize', function (gameSize) {
 			var width = gameSize.width;
 			var height = gameSize.height;

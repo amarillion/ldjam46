@@ -9,6 +9,8 @@ export class Planet {
 
 	reset() {
 		this.temperature = 0; // in K
+		this.maxTemperature = 0;
+		this.minTemperature = Infinity;
 		this.co2 = 0;
 		this.o2 = 0;
 		this.h2o = 0;
@@ -27,6 +29,9 @@ export class Planet {
 	// string representation of cell...
 	toString() {
 		return `Average Temperature: ${this.temperature.toFixed(0)} K
+Lowest Temperature: ${this.minTemperature.toFixed(0)} K
+Highest Temperature: ${this.maxTemperature.toFixed(0)} K
+
 Average albedo: ${this.albedo.toFixed(2)}
 
 CO2: ${this.co2.toFixed(1)}

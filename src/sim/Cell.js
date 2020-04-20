@@ -340,6 +340,9 @@ Species: ${this.speciesToString()}`;
 		planet.albedoSum += this.albedo;
 		planet.temperatureSum += this.temperature;
 
+		if (this.temperature > planet.maxTemperature) { planet.maxTemperature = this.temperature; }
+		if (this.temperature < planet.minTemperature) { planet.minTemperature = this.temperature; }
+		
 		for (const { speciesId, biomass } of this._species) {
 			if (!(speciesId in planet.species)) {
 				planet.species[speciesId] = 0;

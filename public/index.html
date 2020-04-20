@@ -5,11 +5,31 @@
             width: 100vw;
             height: 100vh;
 
+            background: #041849;
+            color: #8285a9;
+        }
+
+        #menu {
+            width: 100%;
+            height: 100%;
+            background-image: url("./assets/images/start3.png");
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #wrapper {
+            width: 100%;
+            height: 100%;
+        }
+
+        #mainGame {
+            width: 100%;
+            height: 100%;
             display: grid;
             grid-template-columns: auto minmax(0, 1fr);
             grid-template-rows: auto minmax(0, 1fr);
-            background: #041849;
-            color: #8285a9;
         }
 
         .border {
@@ -20,4 +40,4 @@
                 0px                     /* outset */
                 round;                  /* repeat */
             padding: 13px;
-        }</style></head><body><div id="content" class="border"></div><exo-detail-window></exo-detail-window><exo-species-window></exo-species-window><exo-planet-window class="border"></exo-planet-window><script src="vendor.0668d35dfda029e69a0a.js?0668d35dfda029e69a0a"></script><script src="app.0668d35dfda029e69a0a.js?0668d35dfda029e69a0a"></script></body></html>
+        }</style></head><body><div id="menu"><div class="buttons"><button id="credits_button">Credits</button> <button id="start_game_button">Start Game</button></div></div><div id="wrapper" style="display: none"><div id="mainGame"><div id="content" class="border"></div><exo-detail-window></exo-detail-window><exo-species-window></exo-species-window><exo-planet-window class="border"></exo-planet-window></div></div><script src="vendor.b86472bff59d40a7bb6c.js?b86472bff59d40a7bb6c"></script><script src="app.b86472bff59d40a7bb6c.js?b86472bff59d40a7bb6c"></script></body></html>

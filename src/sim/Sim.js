@@ -16,7 +16,9 @@ const TRIGGERS = {
 		To terraform the planet, we must introduce some microbe species to the surface.
 		<p>
 		Study and choose one of the 12 species below. Click on any location in the map, pick a species, and click 'Introduce species'.
-		Note that after introducing a species, it takes 20 seconds of game-time before another new batch of that species is ready again.`
+		Note that after introducing a species, it takes 20 seconds of game-time before another new batch of that species is ready again.
+		<p>
+		To look around the planet surface, use the arrow keys and Q/E to zoom in/out`,
 	},
 	'dead_biomass_increased': {
 		condition: (sim) => sim.planet.deadBiomass > 1.2e5,

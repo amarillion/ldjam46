@@ -14,6 +14,10 @@ export class Planet {
 		this.h2o = 0;
 		this.deadBiomass = 0;
 		this.species = {};
+		
+		this.temperatureSum = 0;
+		this.albedoSum = 0;
+		this.albedo = 0;
 	}
 
 	speciesToString() {
@@ -23,6 +27,7 @@ export class Planet {
 	// string representation of cell...
 	toString() {
 		return `Average Temperature: ${this.temperature.toFixed(0)} K
+Average albedo: ${this.albedo.toFixed(2)}
 
 CO2: ${this.co2.toFixed(1)}
 H2O: ${this.h2o.toFixed(1)}

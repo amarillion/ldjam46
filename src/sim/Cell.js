@@ -102,6 +102,8 @@ Heat: ${this.heat.toExponential(2)} GJ/km^2
 Temperature: ${this.temperature.toFixed(0)} K
 Heat gain from sun: ${this.stellarEnergy.toExponential(2)} GJ/km^2/tick
 Heat loss to space: ${this.heatLoss.toExponential(2)} GJ/km^2/tick
+Albedo: ${this.albedo.toFixed(2)}
+${this.albedoDebugStr}
 Latitude: ${this.latitude.toFixed(0)} deg
 
 CO2: ${this.co2.toFixed(1)}
@@ -125,7 +127,12 @@ Species: ${this.speciesToString()}`;
 			assert (this.biotope in info.biotopeTolerances);
 			fitness *= info.biotopeTolerances[this.biotope];
 			
-			//TODO: fitness is also affected by temperature
+			// no chance of survival outside preferred temperature range
+			if (this.temperature < info.temperatureRange[0] ||
+				this.temperature > info.temperatureRange[1]) {
+				fitness *= 0.1;
+			}
+
 			//TODO: fitness is affected by presence of symbionts
 	
 			// fitness must always be a value between 0.0 and 1.0
@@ -136,7 +143,7 @@ Species: ${this.speciesToString()}`;
 			if (info.role === ROLE.PRODUCER) {
 				// lowest substrate determines growth rate.
 				const minS = Math.min(this.co2, this.h2o);
-				const rate = fitness * this.stellarEnergy * PHOTOSYNTHESIS_BASE_RATE * minS; // growth per tick
+				const rate = fitness * this.temperature * this.stellarEnergy * PHOTOSYNTHESIS_BASE_RATE * minS; // growth per tick
 				
 				const amount = Math.min(sp.biomass * rate, this.co2, this.h2o);
 				assert (amount >= 0);
@@ -232,7 +239,7 @@ Species: ${this.speciesToString()}`;
 		if (this._species.length === 0) return;
 
 		for (const sp of this._species) {
-			const amount = sp.biomass * 0.01;
+			const amount = sp.biomass * 0.02;
 			
 			// do not migrate less than one unit - otherwise it will die immediately and will be a huge drain on early growth
 			if (amount < 1.0) {
@@ -287,12 +294,36 @@ Species: ${this.speciesToString()}`;
 	updatePhysicalProperties() {
 		this.temperature = this.heat / SURFACE_HEAT_CAPACITY; // In Kelvin
 		
-		// TODO
-		// this.albedo = + this.sumLivingBiomass();
-		// this.albedo = 1.0;
+		// intersects y-axis at 1.0, reaches lim in infinity.
+		const mapAlbedoReduction = (lim, x) => lim + ((1-lim)/(x+1));
 
-		// receive fixed amount of energy from the sun. TODO: influenced by albedo
-		this.heat += this.stellarEnergy;
+		// intersects y-axis at base, reaches 1.0 in infinity
+		const mapAlbedoRise = (base, x) => 1 - ((1-base)/(x+1));
+
+		// start albedo
+		// albedo decreased by absence of dry ice or ice
+		// (this will increase albedo at the poles for a long time)
+		const dryIceEffect = this.temperature < CO2_BOILING_POINT ? mapAlbedoRise(0.9, this.co2 / 1000) : 0.9;
+		const iceEffect = this.temperature < H2O_MELTING_POINT ? mapAlbedoRise(0.9, this.h2o / 1000) : 0.9;
+		
+		const ALBEDO_BASE = 0.75;
+		this.albedo = ALBEDO_BASE * iceEffect * dryIceEffect;
+
+		let albedoDebugStr = `${ALBEDO_BASE} * ${iceEffect.toFixed(2)} [ice] * ${dryIceEffect.toFixed(2)} [dryIce]`;
+
+		for (const sp of this._species) {
+			const info = START_SPECIES[sp.speciesId];
+			const speciesEffect = mapAlbedoReduction(info.albedo, sp.biomass / 500);
+			this.albedo *= speciesEffect;
+			albedoDebugStr += ` * ${speciesEffect.toFixed(2)} [${sp.speciesId}] `;
+		}
+
+		this.albedoDebugStr = albedoDebugStr;
+
+		assert(this.albedo >= 0.0 && this.albedo <= 1.0);
+
+		// receive fixed amount of energy from the sun, but part radiates back into space by albedo effect
+		this.heat += (1.0 - this.albedo) * this.stellarEnergy;
 
 		// percentage of heat radiates out to space
 		const heatLossPct = 0.01; // TODO: influenced by greenhouse effect and albedo
@@ -305,6 +336,9 @@ Species: ${this.speciesToString()}`;
 		planet.o2 += this.o2;
 		planet.h2o += this.h2o;
 		planet.deadBiomass += this.deadBiomass;
+
+		planet.albedoSum += this.albedo;
+		planet.temperatureSum += this.temperature;
 
 		for (const { speciesId, biomass } of this._species) {
 			if (!(speciesId in planet.species)) {

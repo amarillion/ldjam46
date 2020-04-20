@@ -90,14 +90,12 @@ export class Sim {
 
 	updatePlanet() {
 		this.planet.reset();
-		let n = 0;
-		let tempSum = 0;
 		for (const c of this.grid.eachNode()) {
-			tempSum += c.temperature;
-			n++;
 			c.updateStats(this.planet);
 		}
-		this.planet.temperature = tempSum / n;
+		const n = this.grid.width * this.grid.height;
+		this.planet.temperature = this.planet.temperatureSum / n;
+		this.planet.albedo = this.planet.albedoSum / n;
 	}
 
 }

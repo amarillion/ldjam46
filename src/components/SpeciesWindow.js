@@ -116,7 +116,6 @@ class SpeciesWindow extends HTMLElement {
 
 		this.shadowRoot.querySelectorAll('input').forEach((elt) => {
 			elt.addEventListener("click", (event) => {
-				console.log(`Selected species ${event.target.value}`, { event }); 
 				this.selectedSpecies = event.target.value;
 
 				const info = START_SPECIES[this.selectedSpecies];

@@ -1,6 +1,17 @@
 import { START_SPECIES } from "../sim/StartSpecies";
 import { openDialog } from "./Dialog";
 
+const BIOTOPE_IMAGES = {
+	0:'./assets/images/biotope/sorry_sulfuric2.png',
+	1:'./assets/images/biotope/mountain3.png',
+	2:'./assets/images/biotope/sulfur4.png',
+	3:'./assets/images/biotope/lava1.png',
+	4:'./assets/images/biotope/canyon1.png',
+	5:'./assets/images/biotope/lowland0.png',
+	6:'./assets/images/biotope/salt4.png',
+	7:'./assets/images/biotope/canyon2.png',
+};
+
 class SpeciesWindow extends HTMLElement {
 
 	constructor() {
@@ -25,6 +36,7 @@ class SpeciesWindow extends HTMLElement {
 		#text {
 			background: white;
 			margin: 10px;
+			overflow: auto;
 		}
 
 		button {
@@ -86,7 +98,6 @@ class SpeciesWindow extends HTMLElement {
 
 		</div>	
 		<div id="text">
-			Lorem ipsum...
 		</div>
 		<div>
 			<button id="speciesButton">Introduce species</button>
@@ -121,8 +132,13 @@ class SpeciesWindow extends HTMLElement {
 				this.selectedSpecies = event.target.value;
 
 				const info = START_SPECIES[this.selectedSpecies];
-				const text = `${info.backstory}\nalbedo: ${info.albedo}\nTemp range: ${info.temperatureRange[0]}-${info.temperatureRange[1]} K`;
-				this.shadowRoot.getElementById('text').innerText = text;
+				const text = `<dl>
+				<dd>albedo: ${info.albedo}
+				<dd>Temp range: ${info.temperatureRange[0]}-${info.temperatureRange[1]} K
+				<dd>Likes: ${Object.entries(info.biotopeTolerances).filter(([k, v]) => v > 0.5).map(([k, v]) => `<img src="${BIOTOPE_IMAGES[k]}">`).join('')}
+				<dd>Dislikes: ${Object.entries(info.biotopeTolerances).filter(([k, v]) => v < 0.5).map(([k, v]) => `<img src="${BIOTOPE_IMAGES[k]}">`).join('')}
+				</dl>`;
+				this.shadowRoot.getElementById('text').innerHTML = text;
 			});
 		});
 		
@@ -134,7 +150,6 @@ class SpeciesWindow extends HTMLElement {
 		});
 
 		this.shadowRoot.querySelector("#infoButton").addEventListener("click", (event) => { 
-			console.log("Info...");
 			if (this.selectedSpecies !== null) {
 				const info = START_SPECIES[this.selectedSpecies];
 				openDialog(`<h1>Species Information</h1>
@@ -145,6 +160,8 @@ class SpeciesWindow extends HTMLElement {
 				<dl>
 				<dd>albedo: ${info.albedo}
 				<dd>Temp range: ${info.temperatureRange[0]}-${info.temperatureRange[1]} K
+				<dd>Likes: ${Object.entries(info.biotopeTolerances).filter(([k, v]) => v > 0.5).map(([k, v]) => `<img src="${BIOTOPE_IMAGES[k]}">`).join('')}
+				<dd>Dislikes: ${Object.entries(info.biotopeTolerances).filter(([k, v]) => v < 0.5).map(([k, v]) => `<img src="${BIOTOPE_IMAGES[k]}">`).join('')}
 				</dl>
 				`);
 			}

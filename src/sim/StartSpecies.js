@@ -34,7 +34,6 @@ biotopeTolerances:
 
 */
 
-
 export const START_SPECIES = [
 
 	{ // 0
@@ -48,8 +47,10 @@ export const START_SPECIES = [
 		albedo: 0.9, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 220, 260 ], // min, max temperature in Kelvin
 		backstory: 
-`Early plant
-Lorem ipsum...`,
+`An ancient and strong unicellular plant, but perhaps not the most effective.
+<br>
+Will do well in the cooler early phase of the game.
+`,
 		biotopeTolerances: { 0: 0.1, 1: 0.5, 2: 0.5, 3: 0.5, 4: 0.5, 5: 1.0, 6: 0.5, 7: 0.5 }
 	}, { // 1
 		name: 'Plant 1',
@@ -62,8 +63,10 @@ Lorem ipsum...`,
 		albedo: 0.8, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 230, 270 ], // min, max temperature in Kelvin
 		backstory: 
-`Early plant
-Lorem ipsum...`,
+`Legends say that this plant microbe came from a great scientist. Sounds too funny to be true.
+<br>
+Will do well in the cooler early phase of terraformation.
+`,
 		biotopeTolerances: { 0: 0.5, 1: 0.1, 2: 0.5, 3: 1.0, 4: 0.5, 5: 0.5, 6: 0.5, 7: 0.5 }
 	}, { // 2
 		name: 'Herbivore 0',
@@ -76,9 +79,10 @@ Lorem ipsum...`,
 		albedo: 0.9, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 235, 265 ], // min, max temperature in Kelvin
 		backstory: 
-`
-Early herbivore
-Lorem ipsum...`,
+`A sweet but dangerous creature. Arghhh yarr! Watch yourself, be careful!
+<br>
+One of the hardiest herbivores that will survive in low temperatures. 
+`,
 		biotopeTolerances: { 0: 1.0, 1: 0.5, 2: 0.5, 3: 0.5, 4: 0.5, 5: 0.1, 6: 0.1, 7: 0.5 }
 	}, { // 3
 		name: 'Fungus 1',
@@ -91,9 +95,10 @@ Lorem ipsum...`,
 		albedo: 0.8, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 240, 270 ], // min, max temperature in Kelvin
 		backstory: 
-`
-Early fungus. Needs a little bit of temperature 
-Lorem ipsum...`,
+`Recycle useful substances and return them to the circle of life. Sometimes it feels like a radio wave.
+<br>
+You'll need to introduce a decomposer like this one, otherwise dead organic material will pile up, and stifle the ecosystem.
+`,
 		biotopeTolerances: { 0: 0.5, 1: 0.5, 2: 1.0, 3: 0.5, 4: 1.0, 5: 0.1, 6: 0.1, 7: 0.5 }
 	}, { // 4
 		name: 'Microbe 1',
@@ -105,8 +110,10 @@ Lorem ipsum...`,
 		interactionMap: { 0: INTERACTION.EAT, 1: INTERACTION.EAT, 7: INTERACTION.EAT, 8: INTERACTION.EAT },
 		albedo: 0.7, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 245, 290 ], // min, max temperature in Kelvin
-		backstory: `
-Mid-game herbivore`,
+		backstory: `The cow says Muuuu. This yellow creature does not say anything, it is a microbe. But sometimes...
+<br>
+This creature is a herbivore that can survive in moderately cold climates.
+`,
 		biotopeTolerances: { 0: 0.1, 1: 1.0, 2: 0.5, 3: 0.5, 4: 0.5, 5: 0.5, 6: 0.5, 7: 0.5 }
 	}, { // 5
 		name: 'Microbe 2',
@@ -119,7 +126,9 @@ Mid-game herbivore`,
 		albedo: 0.6, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 250, 290 ], // min, max temperature in Kelvin
 		backstory: `
-Mid-game fungus
+Inspired by space and ready for complexity, the purple mushroom! 
+<br>
+A useful decomposer in a moderately cold climate.
 `,
 		biotopeTolerances: { 0: 0.5, 1: 0.1, 2: 0.1, 3: 0.9, 4: 0.9, 5: 0.5, 6: 0.5, 7: 0.5 }
 	}, { // 6
@@ -133,7 +142,9 @@ Mid-game fungus
 		albedo: 0.6, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 255, 300 ], // min, max temperature in Kelvin
 		backstory: `
-Early carnivore
+This is a cat? Is it a microbe? This is a catcrobe! Micro meow!
+<br>
+This microbe will attack and eat other microbes.
 `,
 		biotopeTolerances: { 0: 0.5, 1: 0.1, 2: 0.1, 3: 0.5, 4: 0.9, 5: 0.9, 6: 0.5, 7: 0.5 }
 	}, { // 7
@@ -147,7 +158,9 @@ Early carnivore
 		albedo: 0.6, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 260, 290 ], // min, max temperature in Kelvin
 		backstory: 
-`Mid-game plant
+`The spiral concentrates the energy of the star and turns it into food for itself. And others.
+<br>
+This is a photosynthesizing organism, a plant species that can survive in moderately cold climates.
 `,
 		biotopeTolerances: { 0: 0.5, 1: 0.1, 2: 0.5, 3: 0.9, 4: 0.5, 5: 0.5, 6: 0.5, 7: 0.5 }
 	}, { // 8
@@ -161,8 +174,9 @@ Early carnivore
 		albedo: 0.5, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 270, 310 ], // min, max temperature in Kelvin
 		backstory: 
-`Late plant
-Relatively poor albedo reduction compared to other late-game species - you'll need cooperation of other microbes`,
+`Rise and Shine, Micro Pumpkin!  Nutritious, but does not help to increase the temperature greatly.
+<br>
+Let this plant species cooperate with other microbes to boost its effect.`,
 		biotopeTolerances: { 0: 0.5, 1: 0.5, 2: 0.5, 3: 0.5, 4: 0.1, 5: 0.9, 6: 0.5, 7: 0.5 }
 	}, { // 9
 		name: 'Microbe 3',
@@ -175,7 +189,9 @@ Relatively poor albedo reduction compared to other late-game species - you'll ne
 		albedo: 0.3, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 270, 310 ], // min, max temperature in Kelvin
 		backstory: 
-`Late herbivore
+`As we all know, bats are cool and dangerous. Therefore, even single-celled bats can eat whatever they want.
+<br>
+This creature is a herbivore for temperate climes.
 `,
 		biotopeTolerances: { 0: 0.1, 1: 0.1, 2: 1.0, 3: 0.5, 4: 0.5, 5: 0.9, 6: 0.9, 7: 0.5 }
 	}, { // 10
@@ -189,9 +205,10 @@ Relatively poor albedo reduction compared to other late-game species - you'll ne
 		albedo: 0.2, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 270, 310 ], // min, max temperature in Kelvin
 		backstory: 
-`Late fungus
-Excellent for albedo effect!
-Lorem ipsum...`,
+`Circle of life! Or a death donut? This mushroom combines immiscible.
+<br>
+A decomposer in temperate climates.
+`,
 		biotopeTolerances: { 0: 0.2, 1: 0.5, 2: 0.5, 3: 0.5, 4: 0.8, 5: 0.5, 6: 0.5, 7: 0.5 }
 	}, { // 11
 		name: 'Angry 1',
@@ -204,9 +221,7 @@ Lorem ipsum...`,
 		albedo: 0.1, // 1.0 = light & early game 0.0 == dark & late game
 		temperatureRange: [ 280, 320 ], // min, max temperature in Kelvin
 		backstory: 
-`Late carnivore
-Excellent for albedo effect!
-Lorem ipsum...`,
+`DO NOT JOKE WITH THIS MICRO RED TERMINATOR!!!`,
 		biotopeTolerances: { 0: 0.1, 1: 0.1, 2: 0.2, 3: 1.0, 4: 0.8, 5: 0.9, 6: 0.9, 7: 0.1 }
 	}
 

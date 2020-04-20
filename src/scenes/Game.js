@@ -6,6 +6,7 @@ import { GridView } from '../view/GridView.js';
 import { TILESIZE } from '../sim/Constants.js';
 import { Cursor } from '../view/Cursor.js';
 import { START_SPECIES } from '../sim/StartSpecies.js';
+import { openDialog } from '../components/Dialog.js';
 
 export default class extends Phaser.Scene {
 	constructor () {
@@ -101,6 +102,24 @@ export default class extends Phaser.Scene {
 
 		this.game.musicPlayer.play('ExoMusicIntro', true);
 		this.game.musicPlayer.play('ExoMusicLoop', false);
+
+		openDialog(`
+<h1>Welcome to Exo Keeper</h1>
+<p>
+Exo Keeper is a game about surviving and thriving on an exo-planet.
+<p>
+Exo Keeper was made in just 72hours for the <a href="https://ldjam.com/events/ludum-dare/46/">Ludum Dare 46</a> Game Jam. The theme of LD46 was:
+<blockquote>
+<b>Keep it alive</b>
+</blockquote>
+<p>Authors:</p>
+<dl>
+<dd><a href="https://twitter.com/mpvaniersel">Amarillion</a> (Code)
+<dd><a href="https://github.com/gekaremi">Gekaremi</a> (Design)
+<dd><a href="https://www.instagram.com/l_p_kongroo">Tatiana Kondratieva</a> (Art)
+<dd><a href="http://www.dodonoghue.com/">Dónall O'Donoghue</a> (Music)
+</dl>
+`);
 	}
 
 	initSim(map) {
